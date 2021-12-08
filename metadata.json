@@ -1,0 +1,10 @@
+{
+  "uuid": "surf@diegonz.github.io",
+  "name": "Surf",
+  "description": "Visit URL or perform a web search with the terms provided directly from GNOME Shell",
+  "version": 1,
+  "shell-version": ["3.36"],
+  "settings-schema": "org.gnome.shell.extensions.surf",
+  "gettext-domain": "gnome-shell-extension-surf",
+  "url": "https://github.com/diegonz/gnome-shell-extension-surf"
+}

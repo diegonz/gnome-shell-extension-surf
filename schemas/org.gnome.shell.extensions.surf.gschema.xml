@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="gnome-shell-extension-surf">
+  <schema id="org.gnome.shell.extensions.surf" path="/org/gnome/shell/extensions/surf/">
+    <!-- See also: https://developer.gnome.org/glib/stable/gvariant-format-strings.html -->
+    <key name="triggers" type="s">
+      <default>":,>,s:"</default>
+      <summary>Trigger characters and keywords</summary>
+      <description>The characters and keywords that trigger the extension in the activities view. Comma-separated values. Spaces are ignored.</description>
+    </key>
+    <key name="search-url" type="s">
+      <default>"https://www.google.com/search?q="</default>
+      <summary>The search URL</summary>
+      <description>The URL to which the search terms are going to be added. Change to use another search engine.</description>
+    </key>
+    <key name="icon-path" type="s">
+      <default>""</default>
+      <summary>The path to the extension icon</summary>
+      <description>The path to the icon to show in the activities view. Leave it blank to use default icon. Best results are obtained using svg images, E.g: /usr/share/icons/*/scalable/*/*.svg.</description>
+    </key>
+  </schema>
+</schemalist>

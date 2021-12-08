@@ -1,0 +1,24 @@
+# Editor configuration, see https://editorconfig.org
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = 119
+
+[*.js]
+quote_type = single
+
+[*.{json,xml}]
+indent_size = 2
+quote_type = double
+
+[*.{md,markdown}]
+trim_trailing_whitespace = false
+
+[*.{json,xml,md,markdown}]
+max_line_length = off
