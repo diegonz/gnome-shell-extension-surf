@@ -18,10 +18,14 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+const Config = imports.misc.config;
+const [major] = Config.PACKAGE_VERSION.split('.');
+const shellVersion = Number.parseInt(major);
+
 const ExtensionUtils = imports.misc.extensionUtils;
 const Gio = imports.gi.Gio;
 const Main = imports.ui.main;
-const Me = imports.misc.extensionUtils.getCurrentExtension();
+const MainLoop = imports.mainloop;
 const Util = imports.misc.util;
 
 var SurfSearchProvider = class SurfSearchProvider {
@@ -101,7 +105,8 @@ var SurfSearchProvider = class SurfSearchProvider {
             id: 'surf',
             name: 'Browse:',
             description: 'Visit URL or perform a web search with the terms provided',
-            createIcon: () => { }
+            createIcon: () => {
+            }
         }]);
     }
 
@@ -144,21 +149,32 @@ var SurfSearchProvider = class SurfSearchProvider {
 class Extension {
 
     constructor() {
-        this.surfSearchProvider = null;
+        this._surfSearchProvider = null;
+        this._delayedRegistration = null;
+    }
+
+    get searchResults() {
+        return shellVersion < 40
+            ? Main.overview.viewSelector._searchResults
+            : Main.overview._overview.controls._searchController._searchResults;
     }
 
     enable() {
-        if (!this.surfSearchProvider) {
-            this.surfSearchProvider = new SurfSearchProvider();
-            Main.overview.viewSelector._searchResults._registerProvider(this.surfSearchProvider);
-        }
+        MainLoop.idle_add(() => {
+            if (this._surfSearchProvider === null) {
+                this._surfSearchProvider = new SurfSearchProvider();
+            }
+            this.searchResults._registerProvider(this._surfSearchProvider);
+        });
     }
 
     disable() {
-        if (this.surfSearchProvider) {
-            Main.overview.viewSelector._searchResults._unregisterProvider(this.surfSearchProvider);
-            this.surfSearchProvider = null;
-        }
+        MainLoop.idle_add(() => {
+            if (this._surfSearchProvider) {
+                this.searchResults._unregisterProvider(this._surfSearchProvider);
+                this._surfSearchProvider = null;
+            }
+        });
     }
 
 }

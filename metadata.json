@@ -3,7 +3,7 @@
   "name": "Surf",
   "description": "Visit URL or perform a web search with the terms provided directly from GNOME Shell",
   "version": 1,
-  "shell-version": ["3.36"],
+  "shell-version": ["3.36", "3.38", "40", "41"],
   "settings-schema": "org.gnome.shell.extensions.surf",
   "gettext-domain": "gnome-shell-extension-surf",
   "url": "https://github.com/diegonz/gnome-shell-extension-surf"

@@ -1,5 +1,9 @@
 'use strict';
 
+const Config = imports.misc.config;
+const [major] = Config.PACKAGE_VERSION.split('.');
+const shellVersion = Number.parseInt(major);
+
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
@@ -8,8 +12,10 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
 const freeForm = Gtk.InputPurpose.FREE_FORM;
-const gtkEntryOptions = { input_purpose: freeForm, hexpand: true, visible: true };
 const gioBindFlags = Gio.SettingsBindFlags.DEFAULT;
+const gtkEntryOptions = { input_purpose: freeForm, hexpand: true, visible: true };
+const gtkGridOptions = { column_spacing: 12, row_spacing: 12, visible: true };
+const gtkGridMargin = shellVersion < 40 ? { margin: 18 } : { margin_top: 18, margin_bottom: 18, margin_start: 18, margin_end: 18 };
 
 
 function init() { }
@@ -19,7 +25,7 @@ function buildPrefsWidget() {
     this._settings = ExtensionUtils.getSettings('org.gnome.shell.extensions.surf');
 
     // Create a parent widget that we'll return from this function
-    let prefsWidget = new Gtk.Grid({ margin: 18, column_spacing: 12, row_spacing: 12, visible: true });
+    let prefsWidget = new Gtk.Grid({ ...gtkGridMargin, ...gtkGridOptions });
 
     // Add a simple title and add it to the prefsWidget
     const titleText = `<b>${Me.metadata.name} Preferences:</b>`;
@@ -52,8 +58,7 @@ function buildPrefsWidget() {
     // At the time buildPrefsWidget() is called, the window is not yet prepared
     // so if you want to access the headerbar you need to use a small trick
     GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-        // In GTK4 (GNOME 40), call `get_root()` instead of `get_toplevel()`
-        let window = prefsWidget.get_toplevel();
+        let window = shellVersion < 40 ? prefsWidget.get_toplevel() : prefsWidget.get_root();
         let headerBar = window.get_titlebar();
         headerBar.title = `${Me.metadata.name} Extension Preferences`;
 
